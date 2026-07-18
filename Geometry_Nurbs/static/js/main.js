@@ -44,6 +44,9 @@ function main() {
   const stats = new Stats();
   container.appendChild(stats.dom);
 
+  container.style.touchAction = "none";
+  container.addEventListener("pointerdown", onPointerDown);
+
   // Group.
   const group = new THREE.Group();
   group.position.y = 50;
@@ -323,15 +326,15 @@ function main() {
   }
 
   // On pointer down.
-  document.addEventListener("pointerdown", onPointerDown);
   function onPointerDown(event) {
     if (event.isPrimary === false) return;
     pointerXOnPointerDown = event.clientX - windowHalfX;
     targetRotationOnPointerDown = targetRotation;
+    document.addEventListener("pointermove", onPointerMove);
+    document.addEventListener("pointerup", onPointerUp);
   }
 
   // On pointer move.
-  document.addEventListener("pointermove", onPointerMove);
   function onPointerMove(event) {
     if (event.isPrimary === false) return;
     pointerX = event.clientX - windowHalfX;
@@ -340,7 +343,6 @@ function main() {
   }
 
   // On pointer up.
-  document.addEventListener("pointerup", onPointerUp);
   function onPointerUp(event) {
     if (event.isPrimary === false) return;
     document.removeEventListener("pointermove", onPointerMove);
